@@ -139,30 +139,6 @@ export default function Simulator() {
     setObYInput(0);
   };
 
-  // Drawing the SVG lines between points in the path
-  const renderPathLines = () => {
-    const lines = [];
-
-    for (let i = 0; i < path.length - 1; i++) {
-      const start = transformCoord(path[i].x, path[i].y);
-      const end = transformCoord(path[i + 1].x, path[i + 1].y);
-
-      lines.push(
-        <line
-          key={i}
-          x1={start.y * 25 + 12.5} // Calculate the center of the grid cell (25x25 size)
-          y1={start.x * 25 + 12.5}
-          x2={end.y * 25 + 12.5}
-          y2={end.x * 25 + 12.5}
-          stroke="red"
-          strokeWidth="2"
-        />,
-      );
-    }
-
-    return lines;
-  };
-
   const onChangeRobotX = (event) => {
     // If the input is an integer and is in the range [1, 18], set RobotX to the input
     if (Number.isInteger(Number(event.target.value))) {
@@ -583,9 +559,6 @@ export default function Simulator() {
           </button>
         </div>
       )}
-      <svg width="500" height="500" className="absolute top-0 left-0 z-10">
-        {renderPathLines()}
-      </svg>
       <table className="border-black border-none border-collapse">
         <tbody>{renderGrid()}</tbody>
       </table>
