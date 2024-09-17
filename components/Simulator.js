@@ -60,6 +60,36 @@ export default function Simulator() {
   const [commands, setCommands] = useState([]);
   const [page, setPage] = useState(0);
 
+  // Drawing the SVG lines between points in the path
+  //
+  const gridSize = 20; // 20x20 grid
+  const cellSize = 32; // Size of each cell in pixels
+  const svgSize = gridSize * cellSize; // Size of the SVG canvas
+
+  // Adjust SVG rendering for correct scaling and centralization
+  const renderPathLines = () => {
+    const lines = [];
+
+    for (let i = 0; i < path.length - 1; i++) {
+      const start = transformCoord(path[i].x, path[i].y);
+      const end = transformCoord(path[i + 1].x, path[i + 1].y);
+
+      lines.push(
+        <line
+          key={i}
+          x1={start.y * cellSize + cellSize / 2} // Adjust based on cell size
+          y1={start.x * cellSize + cellSize / 2}
+          x2={end.y * cellSize + cellSize / 2}
+          y2={end.x * cellSize + cellSize / 2}
+          stroke="red"
+          strokeWidth="3" // Increase stroke width for better visibility
+        />,
+      );
+    }
+
+    return lines;
+  };
+
   const generateNewID = () => {
     while (true) {
       let new_id = Math.floor(Math.random() * 10) + 1; // just try to generate an id;
@@ -569,9 +599,18 @@ export default function Simulator() {
           </button>
         </div>
       )}
-      <table className="border-black border-none border-collapse">
-        <tbody>{renderGrid()}</tbody>
-      </table>
+      <div className="relative">
+        <svg
+          width={svgSize}
+          height={svgSize}
+          className="absolute top-0 left-8 z-10"
+        >
+          {renderPathLines()}
+        </svg>
+        <table className="z-0 border-collapse">
+          <tbody>{renderGrid()}</tbody>
+        </table>
+      </div>
     </div>
   );
 }
