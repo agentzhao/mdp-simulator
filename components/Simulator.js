@@ -45,7 +45,13 @@ export default function Simulator() {
   const [robotX, setRobotX] = useState(1);
   const [robotY, setRobotY] = useState(1);
   const [robotDir, setRobotDir] = useState(0);
-  const [obstacles, setObstacles] = useState([]);
+  const [obstacles, setObstacles] = useState([
+    { x: 15, y: 6, d: 0, id: 7 },
+    { x: 19, y: 1, d: 6, id: 8 },
+    { x: 18, y: 18, d: 6, id: 10 },
+    { x: 4, y: 18, d: 4, id: 3 },
+    { x: 5, y: 6, d: 2, id: 4 },
+  ]);
   const [obXInput, setObXInput] = useState(0);
   const [obYInput, setObYInput] = useState(0);
   const [directionInput, setDirectionInput] = useState(ObDirection.NORTH);
@@ -219,11 +225,15 @@ export default function Simulator() {
       if (data) {
         // If the data is valid, set the path
         setPath(data.data.path);
+        console.log(data.data.path);
+
         // Set the commands
         const commands = [];
         for (let x of data.data.commands) {
           // If the command is a snapshot, skip it
           if (x.startsWith("SNAP")) {
+            // draw a dot on the gui
+            // console.log(data.data.commands);
             continue;
           }
           commands.push(x);
