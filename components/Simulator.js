@@ -46,11 +46,11 @@ export default function Simulator() {
   const [robotY, setRobotY] = useState(1);
   const [robotDir, setRobotDir] = useState(0);
   const [obstacles, setObstacles] = useState([
-    { x: 15, y: 6, d: 0, id: 7 },
-    { x: 19, y: 1, d: 6, id: 8 },
-    { x: 18, y: 18, d: 6, id: 10 },
-    { x: 4, y: 18, d: 4, id: 3 },
-    { x: 5, y: 6, d: 2, id: 4 },
+    { x: 1, y: 8, d: 4, id: 7 },
+    { x: 8, y: 5, d: 4, id: 8 },
+    { x: 13, y: 7, d: 2, id: 10 },
+    { x: 6, y: 9, d: 2, id: 3 },
+    { x: 11, y: 13, d: 2, id: 4 },
   ]);
   const [obXInput, setObXInput] = useState(0);
   const [obYInput, setObYInput] = useState(0);
@@ -252,6 +252,7 @@ export default function Simulator() {
     setIsComputing(true);
     // Call the query function from the API
     QueryAPI.query(obstacles, robotX, robotY, robotDir, (data, err) => {
+      console.log("Obstacles:", obstacles);
       if (data) {
         // If the data is valid, set the path
         setPath(data.data.path);
@@ -269,6 +270,7 @@ export default function Simulator() {
           commands.push(x);
         }
         setCommands(commands);
+        console.log("Commands:", commands);
       }
       // Set computing to false, release the lock
       setIsComputing(false);
@@ -351,23 +353,23 @@ export default function Simulator() {
         if (foundOb) {
           if (foundOb.d === Direction.WEST) {
             cells.push(
-              <td className="w-5 h-5 bg-blue-700 border border-l-4 md:w-8 md:h-8 border-l-red-500" />,
+              <td className="w-5 h-5 bg-black border border-l-4 md:w-8 md:h-8 border-l-red-500" />,
             );
           } else if (foundOb.d === Direction.EAST) {
             cells.push(
-              <td className="w-5 h-5 bg-blue-700 border border-r-4 md:w-8 md:h-8 border-r-red-500" />,
+              <td className="w-5 h-5 bg-black border border-r-4 md:w-8 md:h-8 border-r-red-500" />,
             );
           } else if (foundOb.d === Direction.NORTH) {
             cells.push(
-              <td className="w-5 h-5 bg-blue-700 border border-t-4 md:w-8 md:h-8 border-t-red-500" />,
+              <td className="w-5 h-5 bg-black border border-t-4 md:w-8 md:h-8 border-t-red-500" />,
             );
           } else if (foundOb.d === Direction.SOUTH) {
             cells.push(
-              <td className="w-5 h-5 bg-blue-700 border border-b-4 md:w-8 md:h-8 border-b-red-500" />,
+              <td className="w-5 h-5 bg-black border border-b-4 md:w-8 md:h-8 border-b-red-500" />,
             );
           } else if (foundOb.d === Direction.SKIP) {
             cells.push(
-              <td className="w-5 h-5 bg-blue-700 border md:w-8 md:h-8" />,
+              <td className="w-5 h-5 bg-black border md:w-8 md:h-8" />,
             );
           }
         } else if (foundRobotCell) {
@@ -381,7 +383,7 @@ export default function Simulator() {
             );
           } else {
             cells.push(
-              <td className="w-5 h-5 bg-green-600 border border-white md:w-8 md:h-8" />,
+              <td className="w-5 h-5 bg-gray-600 border border-gray-300 md:w-8 md:h-8" />,
             );
           }
         } else {
@@ -509,7 +511,7 @@ export default function Simulator() {
               key={ob}
               className="flex flex-row text-xs text-black rounded-xl border-cyan-500 md:text-sm badge bg-sky-100 h-max"
             >
-              <div flex flex-col>
+              <div className="flex flex-col">
                 <div>X: {ob.x}</div>
                 <div>Y: {ob.y}</div>
                 <div>D: {DirectionToString[ob.d]}</div>
